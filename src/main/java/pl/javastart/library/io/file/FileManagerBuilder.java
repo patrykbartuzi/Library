@@ -21,6 +21,8 @@ public class FileManagerBuilder {
         switch (fileType) {
             case SERIAL:
                 return new SerializableFileManager();
+            case CSV:
+                return new CsvFileManager();
             default:
                 throw new NoSuchFileTypeException("Nieobsługiwany typ danych");
         }
@@ -32,9 +34,9 @@ public class FileManagerBuilder {
         do {
             printTypes();
             String type = reader.getString().toUpperCase();
-            try{
-            result = FileType.valueOf(type);
-            typeOk = true;
+            try {
+                result = FileType.valueOf(type);
+                typeOk = true;
             } catch (IllegalArgumentException e) {
                 printer.printLine("Nieobsługiwany typ danych, wybierz ponownie");
             }

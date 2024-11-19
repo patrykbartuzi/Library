@@ -43,6 +43,8 @@ public abstract class Publication implements Serializable {
         return title + ", " + publisher + ", " + year;
     }
 
+    public abstract String toCsv();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
