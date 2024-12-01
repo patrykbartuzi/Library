@@ -13,13 +13,13 @@ import pl.javastart.library.model.Library;
 import pl.javastart.library.model.Magazine;
 import pl.javastart.library.model.Publication;
 
+import javax.swing.*;
 import java.util.InputMismatchException;
 
 class LibraryControl {
     private ConsolePrinter printer = new ConsolePrinter();
     private DataReader dataReader = new DataReader(printer);
     private FileManager fileManager;
-
     private Library library;
 
     LibraryControl() {
@@ -56,6 +56,12 @@ class LibraryControl {
                 case EXIT:
                     exit();
                     break;
+                case DELETE_BOOK:
+                    deleteBook();
+                    break;
+                case DELETE_MAGZINE:
+                    deleteMagazine();
+                    break;
                 default:
                     printer.printLine("Nie ma takiej opcji, wprowadź ponownie: ");
             }
@@ -75,7 +81,6 @@ class LibraryControl {
                 printer.printLine("Wprowadzono wartość, która nie jest liczbą, podaj ponownie:");
             }
         }
-
         return option;
     }
 
@@ -118,6 +123,30 @@ class LibraryControl {
         printer.printMagazines(publications);
     }
 
+    private void deleteMagazine() {
+        try {
+            Magazine magazine = dataReader.readAndCreateMagazine();
+            if (library.remove(magazine))
+                printer.printLine("Usunięto magazyn");
+            else
+                printer.printLine("Brak wskazanego magazynu");
+        } catch (InputMismatchException e) {
+            printer.printLine("Nie udało się utworzyć magazynu, niepoprawne dane");
+        }
+    }
+
+    private void deleteBook() {
+        try {
+            Book book = dataReader.readAndCreateBook();
+            if (library.remove(book))
+                printer.printLine("Usunięto ksiązkę");
+            else
+                printer.printLine("Brak wskazanej książki");
+        } catch (InputMismatchException e) {
+            printer.printLine("Nie udało się utworzyć książki, niepoprawne dane");
+        }
+    }
+
     private void exit() {
         try {
             fileManager.exportData(library);
@@ -132,9 +161,11 @@ class LibraryControl {
     private enum Option {
         EXIT(0, "Wyjście z programu"),
         ADD_BOOK(1, "Dodanie książki"),
-        ADD_MAGAZINE(2,"Dodanie magazynu/gazety"),
+        ADD_MAGAZINE(2, "Dodanie magazynu/gazety"),
         PRINT_BOOKS(3, "Wyświetlenie dostępnych książek"),
-        PRINT_MAGAZINES(4, "Wyświetlenie dostępnych magazynów/gazet");
+        PRINT_MAGAZINES(4, "Wyświetlenie dostępnych magazynów/gazet"),
+        DELETE_BOOK(5, "Usuń książkę"),
+        DELETE_MAGZINE(6, "Usuń magazyn");
 
         private int value;
         private String description;
@@ -152,7 +183,7 @@ class LibraryControl {
         static Option createFromInt(int option) throws NoSuchOptionException {
             try {
                 return Option.values()[option];
-            } catch(ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException e) {
                 throw new NoSuchOptionException("Brak opcji o id " + option);
             }
         }
