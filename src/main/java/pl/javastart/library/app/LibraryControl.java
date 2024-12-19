@@ -8,8 +8,7 @@ import pl.javastart.library.io.file.FileManagerBuilder;
 import pl.javastart.library.model.*;
 import pl.javastart.library.model.comparator.AlphabeticalTitleComparator;
 
-import java.util.Arrays;
-import java.util.InputMismatchException;
+import java.util.*;
 
 class LibraryControl {
     private ConsolePrinter printer = new ConsolePrinter();
@@ -128,17 +127,22 @@ class LibraryControl {
 
     //zmiana logiki
     private void printBooks() {
-        printer.printBooks(library.getPublications().values());
+        printer.printBooks(library.getSortedPublications(new AlphabeticalTitleComparator()));
     }
 
     //zmiana logiki
     private void printMagazines() {
-        printer.printMagazines(library.getPublications().values());
+        printer.printMagazines(library.getSortedPublications(new AlphabeticalTitleComparator()));
     }
 
     //dodano
     private void printUsers() {
-        printer.printUsers(library.getUsers().values());
+        printer.printUsers(library.getSortedUsers(new Comparator<LibraryUser>() {
+            @Override
+            public int compare(LibraryUser o1, LibraryUser o2) {
+                return o1.getLastName().compareTo(o2.getLastName());
+            }
+        }));
     }
 
     private void deleteMagazine() {
