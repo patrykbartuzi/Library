@@ -127,22 +127,23 @@ class LibraryControl {
 
     //zmiana logiki
     private void printBooks() {
-        printer.printBooks(library.getSortedPublications(new AlphabeticalTitleComparator()));
+        printer.printBooks(library.getSortedPublications(
+                (p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle())
+        ));
     }
 
     //zmiana logiki
     private void printMagazines() {
-        printer.printMagazines(library.getSortedPublications(new AlphabeticalTitleComparator()));
+        printer.printMagazines(library.getSortedPublications(
+                (p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle())
+        ));
     }
 
     //dodano
     private void printUsers() {
-        printer.printUsers(library.getSortedUsers(new Comparator<LibraryUser>() {
-            @Override
-            public int compare(LibraryUser o1, LibraryUser o2) {
-                return o1.getLastName().compareTo(o2.getLastName());
-            }
-        }));
+        printer.printUsers(library.getSortedUsers(
+                (o1,o2) -> o1.getLastName().compareToIgnoreCase(o2.getLastName())
+                ));
     }
 
     private void deleteMagazine() {
