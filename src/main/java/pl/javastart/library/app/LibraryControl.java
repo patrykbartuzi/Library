@@ -128,22 +128,20 @@ class LibraryControl {
     //zmiana logiki
     private void printBooks() {
         printer.printBooks(library.getSortedPublications(
-                (p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle())
-        ));
+                Comparator.comparing(Publication::getTitle, String.CASE_INSENSITIVE_ORDER))
+        );
     }
 
-    //zmiana logiki
     private void printMagazines() {
         printer.printMagazines(library.getSortedPublications(
-                (p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle())
+                Comparator.comparing(Publication::getTitle, String.CASE_INSENSITIVE_ORDER)
         ));
     }
 
-    //dodano
     private void printUsers() {
         printer.printUsers(library.getSortedUsers(
-                (o1,o2) -> o1.getLastName().compareToIgnoreCase(o2.getLastName())
-                ));
+                Comparator.comparing(User::getLastName, String.CASE_INSENSITIVE_ORDER)
+        ));
     }
 
     private void deleteMagazine() {
